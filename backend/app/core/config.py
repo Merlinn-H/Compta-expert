@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     FRANKFURTER_API_URL: str = "https://api.frankfurter.app"
+    # Comma-separated list of allowed CORS origins (override in production)
+    ALLOWED_ORIGINS: str = "http://localhost:3000,http://localhost,http://localhost:80"
     # When True: FastAPI serves the built React frontend as static files
     STANDALONE: bool = bool(os.environ.get("STANDALONE", ""))
     # Port used by the standalone launcher
@@ -32,4 +34,13 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Warn loudly if the default insecure secret key is used outside standalone mode
+import sys as _sys
+if settings.SECRET_KEY == "change-me-in-production" and not settings.STANDALONE:
+    print(
+        "\n⚠️  WARNING: SECRET_KEY is set to the default insecure value. "
+        "Set the SECRET_KEY environment variable before deploying to production.\n",
+        file=_sys.stderr,
+    )
 

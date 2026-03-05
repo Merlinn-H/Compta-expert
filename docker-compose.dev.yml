@@ -1,0 +1,23 @@
+# Development overrides — hot reload for both frontend and backend
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+version: "3.9"
+
+services:
+  backend:
+    volumes:
+      - ./backend:/app   # mount source for --reload to pick up changes
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+      # Override: use a dev image (Vite dev server) instead of the nginx prod build
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+      - "80:80"         # keep 80 available if needed
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://backend:8000

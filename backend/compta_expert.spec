@@ -15,40 +15,52 @@ a = Analysis(
     pathex=[str(PROJECT_ROOT / "backend")],
     binaries=[],
     datas=[
-        # Bundle the built React frontend
+        # Bundle the built React frontend as a single static directory
         (str(FRONTEND_DIST), "frontend_dist"),
     ],
     hiddenimports=[
-        # SQLAlchemy dialects
+        # SQLAlchemy — only SQLite needed for standalone (no psycopg2)
         "sqlalchemy.dialects.sqlite",
-        "sqlalchemy.dialects.postgresql",
-        # passlib backends
+        "sqlalchemy.pool",
+        # passlib bcrypt backend
         "passlib.handlers.bcrypt",
         "passlib.handlers.sha2_crypt",
-        # jose
-        "jose",
-        "jose.jwt",
+        # PyJWT (replaces python-jose)
+        "jwt",
+        "jwt.algorithms",
+        # slowapi / limits
+        "slowapi",
+        "limits",
+        "limits.storage",
+        "limits.strategies",
         # pydantic
         "pydantic.deprecated.class_validators",
         "pydantic_settings",
         # httpx
         "httpx",
-        # reportlab
+        "httpx._transports.default",
+        # reportlab (PDF generation)
         "reportlab",
         "reportlab.graphics",
         "reportlab.platypus",
-        # uvicorn internals
+        "reportlab.lib.pagesizes",
+        "reportlab.lib.styles",
+        "reportlab.lib.units",
+        # uvicorn internals (subset — no websockets needed for standalone)
         "uvicorn.logging",
         "uvicorn.loops",
         "uvicorn.loops.auto",
         "uvicorn.protocols",
         "uvicorn.protocols.http",
         "uvicorn.protocols.http.auto",
-        "uvicorn.protocols.websockets",
-        "uvicorn.protocols.websockets.auto",
         "uvicorn.lifespan",
         "uvicorn.lifespan.on",
-        # app modules (ensure they're all included)
+        # fastapi / starlette
+        "fastapi.staticfiles",
+        "fastapi.responses",
+        "starlette.staticfiles",
+        "starlette.responses",
+        # app modules
         "app.main",
         "app.api.auth",
         "app.api.transactions",
@@ -75,7 +87,15 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=["tkinter", "test", "unittest"],
+    # Aggressively exclude things not needed in standalone mode
+    excludes=[
+        "tkinter", "test", "unittest",
+        "pandas", "openpyxl", "alembic",
+        "psycopg2", "psycopg2-binary",
+        "matplotlib", "scipy", "numpy",
+        "IPython", "jupyter",
+        "setuptools", "pkg_resources",
+    ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
