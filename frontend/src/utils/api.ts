@@ -1,7 +1,13 @@
 import axios from 'axios'
 import { useAppStore } from '../store/useAppStore'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// In standalone mode the React app is served by FastAPI on the same origin,
+// so API calls go to window.location.origin. In Docker/dev use VITE_API_URL.
+declare const __STANDALONE__: boolean
+const API_BASE =
+  typeof __STANDALONE__ !== 'undefined' && __STANDALONE__
+    ? window.location.origin
+    : (import.meta.env.VITE_API_URL || 'http://localhost:8000')
 
 export const api = axios.create({
   baseURL: API_BASE,

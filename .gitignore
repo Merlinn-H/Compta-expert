@@ -17,8 +17,14 @@ dist/
 # Docker
 *.log
 
+# PyInstaller build artifacts
+backend/dist/
+backend/build/
+backend/*.spec.bak
+
 # DB
 *.sqlite3
+*.db
 
 # IDE
 .vscode/

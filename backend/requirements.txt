@@ -14,3 +14,5 @@ reportlab==4.2.2
 openpyxl==3.1.4
 pandas==2.2.2
 python-dateutil==2.9.0
+# Standalone packaging (not needed for Docker)
+pyinstaller==6.8.0
