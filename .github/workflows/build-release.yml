@@ -1,0 +1,187 @@
+name: Build & Release
+
+# Triggers:
+#   1. Push a version tag:        git tag v1.0.0 && git push origin v1.0.0
+#   2. Manual run from GitHub UI: Actions → Build & Release → Run workflow
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  # ── Mac build (produces ComptaExpert.app) ───────────────────────────────────
+  build-mac:
+    name: Build — macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Build React frontend (standalone mode)
+        working-directory: frontend
+        run: |
+          npm ci --silent
+          npm run build:standalone
+
+      - name: Install Python dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Build with PyInstaller
+        working-directory: backend
+        run: pyinstaller compta_expert.spec --noconfirm --clean
+
+      - name: Zip .app bundle
+        working-directory: backend/dist
+        run: zip -r ComptaExpert-mac.zip ComptaExpert.app
+
+      - name: Upload Mac artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-build
+          path: backend/dist/ComptaExpert-mac.zip
+          retention-days: 1
+
+  # ── Windows build (produces ComptaExpert.exe) ───────────────────────────────
+  build-windows:
+    name: Build — Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Build React frontend (standalone mode)
+        working-directory: frontend
+        run: |
+          npm ci --silent
+          npm run build:standalone
+
+      - name: Install Python dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Build with PyInstaller
+        working-directory: backend
+        run: pyinstaller compta_expert.spec --noconfirm --clean
+
+      - name: Zip Windows build
+        working-directory: backend/dist
+        run: Compress-Archive -Path ComptaExpert -DestinationPath ComptaExpert-windows.zip
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: backend\dist\ComptaExpert-windows.zip
+          retention-days: 1
+
+  # ── Create GitHub Release and attach both builds ────────────────────────────
+  release:
+    name: Publish Release
+    needs: [build-mac, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: "Compta Expert ${{ steps.version.outputs.tag }}"
+          body: |
+            ## Compta Expert ${{ steps.version.outputs.tag }}
+
+            Application de comptabilité bilingue (FR/EN) pour le Québec 🍁 et la France 🇫🇷.
+            Bilingual (FR/EN) accounting app for Quebec and France.
+
+            ---
+
+            ### 📥 Télécharger / Download
+
+            | Plateforme | Fichier | Notes |
+            |------------|---------|-------|
+            | 🍎 **macOS** (Intel + Apple Silicon) | `ComptaExpert-mac.zip` | Dézipper → glisser dans Applications |
+            | 🪟 **Windows** (x64) | `ComptaExpert-windows.zip` | Dézipper → double-cliquer `ComptaExpert.exe` |
+
+            ---
+
+            ### 🚀 Installation rapide / Quick install
+
+            **Mac**
+            1. Télécharger `ComptaExpert-mac.zip` / Download `ComptaExpert-mac.zip`
+            2. Dézipper / Unzip
+            3. Glisser `ComptaExpert.app` dans `/Applications` / Drag to `/Applications`
+            4. Double-cliquer pour lancer / Double-click to launch
+            > Si macOS bloque l'app : Clic droit → Ouvrir → Ouvrir quand même
+            > If macOS blocks: Right-click → Open → Open anyway
+
+            **Windows**
+            1. Télécharger `ComptaExpert-windows.zip` / Download `ComptaExpert-windows.zip`
+            2. Dézipper dans un dossier de votre choix / Unzip to a folder of your choice
+            3. Double-cliquer `ComptaExpert.exe`
+
+            ---
+
+            ### ℹ️ Notes
+
+            - Aucun prérequis / No prerequisites — Python, Node.js et PostgreSQL sont inclus
+            - Les données sont stockées localement (SQLite) / Data stored locally (SQLite)
+            - Connexion internet requise uniquement pour les taux de change (Frankfurter API)
+            - Internet required only for exchange rates (Frankfurter API)
+          files: |
+            ComptaExpert-mac.zip
+            ComptaExpert-windows.zip
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true

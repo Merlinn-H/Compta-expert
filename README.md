@@ -4,6 +4,18 @@
 
 ---
 
+## 📥 Télécharger / Download
+
+| Plateforme | Lien |
+|------------|------|
+| 🍎 **macOS** | [Dernière version / Latest release →](../../releases/latest) |
+| 🪟 **Windows** | [Dernière version / Latest release →](../../releases/latest) |
+
+> Aucun prérequis — Python, Node.js et PostgreSQL sont inclus dans l'exécutable.
+> No prerequisites — Python, Node.js and PostgreSQL are bundled in the executable.
+
+---
+
 ## Français
 
 Application de comptabilité bilingue (FR/EN) pour la gestion financière au **Québec (Canada)** et en **France (Europe)**. Prend en charge le CAD et l'EUR comme devises principales avec un suivi multidevise complet.
