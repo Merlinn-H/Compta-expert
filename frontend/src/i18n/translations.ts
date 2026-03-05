@@ -1,0 +1,206 @@
+export const translations = {
+  fr: {
+    // Navigation
+    dashboard: 'Tableau de bord',
+    transactions: 'Transactions',
+    taxQuebec: 'Taxes Québec',
+    taxFrance: 'Taxes France',
+    reports: 'Rapports',
+    settings: 'Paramètres',
+    logout: 'Déconnexion',
+
+    // Auth
+    login: 'Connexion',
+    register: "S'inscrire",
+    email: 'Courriel',
+    password: 'Mot de passe',
+    fullName: 'Nom complet',
+    loginTitle: 'Connexion à Compta Expert',
+    registerTitle: 'Créer un compte',
+    noAccount: 'Pas de compte ?',
+    hasAccount: 'Déjà un compte ?',
+
+    // Dashboard
+    totalIncome: 'Revenus totaux',
+    totalExpenses: 'Dépenses totales',
+    netBalance: 'Solde net',
+    recentTransactions: 'Transactions récentes',
+    monthlyTrend: 'Tendance mensuelle',
+    allJurisdictions: 'Toutes les juridictions',
+    quebec: 'Québec',
+    france: 'France',
+
+    // Transactions
+    newTransaction: 'Nouvelle transaction',
+    editTransaction: 'Modifier la transaction',
+    deleteTransaction: 'Supprimer',
+    date: 'Date',
+    description: 'Description',
+    amount: 'Montant',
+    currency: 'Devise',
+    jurisdiction: 'Juridiction',
+    type: 'Type',
+    income: 'Revenu',
+    expense: 'Dépense',
+    category: 'Catégorie',
+    notes: 'Notes',
+    exchangeRate: 'Taux de change',
+    historicalRate: 'Taux historique',
+    convertedAmount: 'Montant converti',
+    noTransactions: 'Aucune transaction',
+    save: 'Enregistrer',
+    cancel: 'Annuler',
+    confirm: 'Confirmer',
+    deleteConfirm: 'Êtes-vous sûr de vouloir supprimer cette transaction ?',
+
+    // Tax
+    taxSummary: 'Résumé fiscal',
+    quarter: 'Trimestre',
+    year: 'Année',
+    month: 'Mois',
+    tpsCollected: 'TPS collectée',
+    tvqCollected: 'TVQ collectée',
+    ctiRecoverable: 'CTI récupérable',
+    rtiRecoverable: 'RTI récupérable',
+    netRemittance: 'Versement net',
+    tvaCollectee: 'TVA collectée',
+    tvaDeductible: 'TVA déductible',
+    tvaAPayer: 'TVA à payer',
+    downloadFEC: 'Télécharger FEC',
+    caHT: "Chiffre d'affaires HT",
+
+    // Reports
+    profitLoss: 'Compte de résultat',
+    dateFrom: 'Du',
+    dateTo: 'Au',
+    generate: 'Générer',
+    downloadPDF: 'Télécharger PDF',
+    downloadCSV: 'Télécharger CSV',
+    originalAmount: 'Montant original',
+    targetAmount: 'Montant converti',
+    rateUsed: 'Taux utilisé',
+
+    // Settings
+    preferredLanguage: 'Langue préférée',
+    defaultCurrency: 'Devise par défaut',
+    fiscalYearStart: 'Début exercice fiscal',
+    saveSettings: 'Enregistrer les paramètres',
+
+    // Exchange rate
+    rateAsOf: 'taux au',
+    noConversion: 'Pas de conversion',
+
+    // General
+    loading: 'Chargement...',
+    error: 'Erreur',
+    success: 'Succès',
+    search: 'Rechercher',
+    filter: 'Filtrer',
+    all: 'Tout',
+    total: 'Total',
+    net: 'Net',
+  },
+  en: {
+    // Navigation
+    dashboard: 'Dashboard',
+    transactions: 'Transactions',
+    taxQuebec: 'Quebec Tax',
+    taxFrance: 'France Tax',
+    reports: 'Reports',
+    settings: 'Settings',
+    logout: 'Logout',
+
+    // Auth
+    login: 'Login',
+    register: 'Register',
+    email: 'Email',
+    password: 'Password',
+    fullName: 'Full name',
+    loginTitle: 'Login to Compta Expert',
+    registerTitle: 'Create an account',
+    noAccount: 'No account?',
+    hasAccount: 'Already have an account?',
+
+    // Dashboard
+    totalIncome: 'Total Income',
+    totalExpenses: 'Total Expenses',
+    netBalance: 'Net Balance',
+    recentTransactions: 'Recent Transactions',
+    monthlyTrend: 'Monthly Trend',
+    allJurisdictions: 'All Jurisdictions',
+    quebec: 'Quebec',
+    france: 'France',
+
+    // Transactions
+    newTransaction: 'New Transaction',
+    editTransaction: 'Edit Transaction',
+    deleteTransaction: 'Delete',
+    date: 'Date',
+    description: 'Description',
+    amount: 'Amount',
+    currency: 'Currency',
+    jurisdiction: 'Jurisdiction',
+    type: 'Type',
+    income: 'Income',
+    expense: 'Expense',
+    category: 'Category',
+    notes: 'Notes',
+    exchangeRate: 'Exchange Rate',
+    historicalRate: 'Historical Rate',
+    convertedAmount: 'Converted Amount',
+    noTransactions: 'No transactions',
+    save: 'Save',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    deleteConfirm: 'Are you sure you want to delete this transaction?',
+
+    // Tax
+    taxSummary: 'Tax Summary',
+    quarter: 'Quarter',
+    year: 'Year',
+    month: 'Month',
+    tpsCollected: 'TPS Collected',
+    tvqCollected: 'TVQ Collected',
+    ctiRecoverable: 'CTI Recoverable',
+    rtiRecoverable: 'RTI Recoverable',
+    netRemittance: 'Net Remittance',
+    tvaCollectee: 'TVA Collected',
+    tvaDeductible: 'TVA Deductible',
+    tvaAPayer: 'TVA Payable',
+    downloadFEC: 'Download FEC',
+    caHT: 'Revenue (excl. tax)',
+
+    // Reports
+    profitLoss: 'Profit & Loss',
+    dateFrom: 'From',
+    dateTo: 'To',
+    generate: 'Generate',
+    downloadPDF: 'Download PDF',
+    downloadCSV: 'Download CSV',
+    originalAmount: 'Original Amount',
+    targetAmount: 'Converted Amount',
+    rateUsed: 'Rate Used',
+
+    // Settings
+    preferredLanguage: 'Preferred Language',
+    defaultCurrency: 'Default Currency',
+    fiscalYearStart: 'Fiscal Year Start',
+    saveSettings: 'Save Settings',
+
+    // Exchange rate
+    rateAsOf: 'rate as of',
+    noConversion: 'No conversion',
+
+    // General
+    loading: 'Loading...',
+    error: 'Error',
+    success: 'Success',
+    search: 'Search',
+    filter: 'Filter',
+    all: 'All',
+    total: 'Total',
+    net: 'Net',
+  },
+}
+
+export type TranslationKey = keyof typeof translations.fr
